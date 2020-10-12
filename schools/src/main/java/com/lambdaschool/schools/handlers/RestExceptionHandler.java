@@ -2,7 +2,6 @@ package com.lambdaschool.schools.handlers;
 
 import com.lambdaschool.schools.exceptions.ResourceAlreadyPresentException;
 import com.lambdaschool.schools.exceptions.ResourceNotFoundException;
-import com.lambdaschool.schools.exceptions.UnknownEndpointException;
 import com.lambdaschool.schools.models.ErrorDetail;
 import com.lambdaschool.schools.services.HelperFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,24 +57,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(detail, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(UnknownEndpointException.class)
-    public ResponseEntity<?> unknownEndpointHandler(UnknownEndpointException exception)
-    {
-        ErrorDetail detail = new ErrorDetail();
-        detail.setDetail(exception.getMessage());
-        detail.setDeveloperMessage(exception.getClass().getName());
-        detail.setErrors(helperFunctions.getConstraintViolations(exception));
-        detail.setStatus(HttpStatus.NOT_FOUND.value());
-        detail.setTimestamp(new Date());
-        detail.setTitle("Endpoint Not Found");
-
-        return new ResponseEntity<>(detail, HttpStatus.NOT_FOUND);
-    }
-
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ErrorDetail detail = new ErrorDetail();
-        detail.setDetail(ex.getMessage());
+        detail.setDetail("Exception in School: " + ex.getMessage());
         detail.setDeveloperMessage(ex.getClass().getName());
         detail.setErrors(helperFunctions.getConstraintViolations(ex));
         detail.setStatus(status.value());
