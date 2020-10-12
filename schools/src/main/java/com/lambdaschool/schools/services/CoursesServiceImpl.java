@@ -145,7 +145,7 @@ public class CoursesServiceImpl
                 courseid);
         } else
         {
-            throw new EntityNotFoundException("Student and Course Combination Does Not Exists");
+            throw new EntityNotFoundException("Student and Course Combination Does Not Exist");
         }
     }
 
